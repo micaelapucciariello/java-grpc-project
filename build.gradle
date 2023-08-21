@@ -1,6 +1,6 @@
 plugins {
+    id 'java'
     id "com.google.protobuf" version "0.9.4"
-    id "java"
 }
 
 group = "org.example"
@@ -11,36 +11,41 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
 
     // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
-    implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '4.0.0-rc-2'
+    implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '3.24.0'
 
     // https://mvnrepository.com/artifact/io.grpc/grpc-all
     implementation group: 'io.grpc', name: 'grpc-all', version: '1.57.1'
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs "build/generated/source/proto/main/grpc"
-            srcDirs "build/generated/source/proto/main/java"
+sourceSets{
+    main{
+        java{
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/java'
         }
     }
 }
 
 protobuf {
+    // Configure the protoc executable
     protoc {
-        artifact = 'com.google.protobuf:protoc:3.0.0'
+        // Download from repositories
+        artifact = 'com.google.protobuf:protoc:3.24.0'
     }
 
     plugins {
+        // Locate a plugin with name 'grpc'. This step is optional.
+        // If you leave it empty, it uses the current directory.
+        // If you don't specify it, protoc will try to use "protoc-gen-grpc" from
+        // system search path.
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.57.1'
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.57.2'
+            // or
+            // path = 'tools/protoc-gen-grpc-java'
         }
     }
-
 
     generateProtoTasks {
         all()*.plugins {
@@ -49,6 +54,4 @@ protobuf {
     }
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
+
