@@ -1,6 +1,8 @@
 package com.github.micaelapucciariello.pcbook.sample;
 
 import pcbook.CPU;
+import pcbook.GPU;
+import pcbook.Memory;
 
 import java.util.Objects;
 import java.util.Random;
@@ -23,6 +25,27 @@ public class Generator {
         return CPU.newBuilder()
                 .setBrand(brand)
                 .setName(name)
+                .setCores(cores)
+                .setThreads(threads)
+                .setMinGhz(min_ghz)
+                .setMaxGhz(max_ghz)
+                .build();
+    }
+
+    public GPU NewGPU() {
+        String brand = randomGPUBrand();
+        int cores = randomInt(2, 4);
+        int threads = randomInt(cores, 8);
+        double min_ghz = randomDouble(2,3.5);
+        double max_ghz = randomDouble(min_ghz,5);
+        Memory memory = Memory.newBuilder()
+                .setUnit(Memory.Unit.GBYTE)
+                .setValue(randomInt(2,16))
+                .build();
+
+        return GPU.newBuilder()
+                .setBrand(brand)
+                .setName(brand)
                 .setCores(cores)
                 .setThreads(threads)
                 .setMinGhz(min_ghz)
