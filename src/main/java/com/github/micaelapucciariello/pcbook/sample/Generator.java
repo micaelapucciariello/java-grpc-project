@@ -1,9 +1,9 @@
 package com.github.micaelapucciariello.pcbook.sample;
 
-import pcbook.CPU;
-import pcbook.GPU;
-import pcbook.Memory;
+import com.google.protobuf.Timestamp;
+import pcbook.*;
 
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Random;
 
@@ -14,13 +14,35 @@ public class Generator {
         rand = new Random();
     }
 
+    public PC NewPC() {
+        Instant now = Instant.now();
+        String brand = randomPCBrand();
+        double price = randomDouble(100, 2000);
+        int releaseYear = randomInt(2017, 2023);
+        Memory memory = Memory.newBuilder()
+                .setUnit(Memory.Unit.GBYTE)
+                .setValue("64")
+                .build();
+
+        return PC.newBuilder()
+                .setBrand(brand)
+                .setCpu(NewCPU())
+                .addGpu(NewGPU())
+                .setScreen(NewScreen())
+                .addMemory(memory)
+                .setUsdPrice(price)
+                .setReleaseYear(releaseYear)
+                .setUpdatedAt(Timestamp.newBuilder().setNanos(now.getNano()).build())
+                .build();
+    }
+
     public CPU NewCPU() {
         String brand = randomCPUBrand();
         String name = randomCPUName(brand);
         int cores = randomInt(2, 4);
         int threads = randomInt(cores, 8);
-        double min_ghz = randomDouble(2,3.5);
-        double max_ghz = randomDouble(min_ghz,5);
+        double min_ghz = randomDouble(2, 3.5);
+        double max_ghz = randomDouble(min_ghz, 5);
 
         return CPU.newBuilder()
                 .setBrand(brand)
@@ -36,11 +58,11 @@ public class Generator {
         String brand = randomGPUBrand();
         int cores = randomInt(2, 4);
         int threads = randomInt(cores, 8);
-        double min_ghz = randomDouble(2,3.5);
-        double max_ghz = randomDouble(min_ghz,5);
+        double min_ghz = randomDouble(2, 3.5);
+        double max_ghz = randomDouble(min_ghz, 5);
         Memory memory = Memory.newBuilder()
                 .setUnit(Memory.Unit.GBYTE)
-                .setValue(randomInt(2,16))
+                .setValue("64")
                 .build();
 
         return GPU.newBuilder()
@@ -50,6 +72,46 @@ public class Generator {
                 .setThreads(threads)
                 .setMinGhz(min_ghz)
                 .setMaxGhz(max_ghz)
+                .setMemory(memory)
+                .build();
+    }
+
+    public Screen NewScreen() {
+        int width = randomInt(1024, 4320);
+        int height = width * (9 / 16);
+
+        return Screen.newBuilder()
+                .setResolution(Screen.Resolution.newBuilder()
+                        .setHeight(height)
+                        .setWidth(width)
+                        .build())
+                .setMultitouch(false)
+                .setPanel(Screen.Panel.IPS)
+                .setSizeInch(randomInt(10, 24))
+                .build();
+    }
+
+    public Storage NewHDD() {
+        Memory memory = Memory.newBuilder()
+                .setUnit(Memory.Unit.GBYTE)
+                .setValue("128")
+                .build();
+
+        return Storage.newBuilder()
+                .setDriver(Storage.Driver.HDD)
+                .setMemory(memory)
+                .build();
+    }
+
+    public Storage NewSSD() {
+        Memory memory = Memory.newBuilder()
+                .setUnit(Memory.Unit.GBYTE)
+                .setValue("240")
+                .build();
+
+        return Storage.newBuilder()
+                .setDriver(Storage.Driver.SSD)
+                .setMemory(memory)
                 .build();
     }
 
@@ -57,8 +119,15 @@ public class Generator {
         return randomStringFromSet("AMD, Intel");
     }
 
+
+    public String randomPCBrand() {
+        return randomStringFromSet("Apple",
+                "Dell",
+                "Acer");
+    }
+
     public String randomGPUBrand() {
-        return randomStringFromSet("NVIDIA","AMD");
+        return randomStringFromSet("NVIDIA", "AMD");
     }
 
     public String randomCPUName(String brand) {
@@ -76,12 +145,12 @@ public class Generator {
                 "rizen-7-PRO");
     }
 
-    private int randomInt(int min, int max){
-        return min + rand.nextInt(max-min+1);
+    private int randomInt(int min, int max) {
+        return min + rand.nextInt(max - min + 1);
     }
 
-    private double randomDouble(double min, double max){
-        return min + rand.nextDouble(max-min+1);
+    private double randomDouble(double min, double max) {
+        return min + rand.nextDouble(max - min + 1);
     }
 
     public String randomStringFromSet(String... s) {
@@ -91,4 +160,11 @@ public class Generator {
         }
         return s[rand.nextInt(n)];
     }
+
+    public static void main(String[] args) {
+        Generator generator = new Generator();
+        PC pc = generator.NewPC();
+        System.out.println(pc);
+    }
+
 }
