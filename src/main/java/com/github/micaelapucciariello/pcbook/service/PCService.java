@@ -3,12 +3,19 @@ package com.github.micaelapucciariello.pcbook.service;
 import io.grpc.Status;
 import pcbook.PC;
 import pcbook.PCServiceGrpc;
+import pcbook.ServicePc;
 
 import java.util.UUID;
 import java.util.logging.Logger;
 
 public class PCService extends PCServiceGrpc.PCServiceImplBase {
     public static final Logger logger = Logger.getLogger(PCService.logger.getName());
+
+    private PCStore store;
+
+    public PCService(PCStore store){
+        this.store = store;
+    }
 
     @Override
     public void createPc(pcbook.ServicePc.CreatePCRequest request,
@@ -32,6 +39,19 @@ public class PCService extends PCServiceGrpc.PCServiceImplBase {
 
         assert uuid != null;
         PC other = pc.toBuilder().setId(uuid.toString()).build();
+        try {
+            store.Save(other);
+        } catch (AlreadyExistsException e){
+            Status.ALREADY_EXISTS.withDescription(e.getMessage()).asRuntimeException();
 
+        } catch (Exception e){
+            Status.INTERNAL.withDescription(e.getMessage()).asRuntimeException();
+        }
+
+        ServicePc.CreatePCResponse response = ServicePc.CreatePCResponse.newBuilder().setId(other.getId()).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+
+        logger.info("pc saved with id: " + pc.getId());
     }
 }
