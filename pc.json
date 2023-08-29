@@ -1,41 +1,41 @@
 {
   "id": "",
-  "brand": "Apple",
+  "brand": "Dell",
   "memory": [{
     "value": "64",
     "unit": "GBYTE"
   }],
   "cpu": {
     "brand": "AMD, Intel",
-    "name": "rizen-7-PRO",
-    "cores": 4,
-    "threads": 8,
-    "min_ghz": 3.6622753524150067,
-    "max_ghz": 4.180018856604456
+    "name": "rizen-3-PRO",
+    "cores": 2,
+    "threads": 4,
+    "min_ghz": 2.7799297179300613,
+    "max_ghz": 3.2647407494051297
   },
   "gpu": [{
-    "brand": "NVIDIA",
-    "name": "NVIDIA",
+    "brand": "AMD",
+    "name": "AMD",
     "cores": 4,
-    "threads": 6,
-    "min_ghz": 2.4311767714021113,
-    "max_ghz": 2.90337986729595,
+    "threads": 7,
+    "min_ghz": 2.267863960516701,
+    "max_ghz": 2.5411729547778696,
     "memory": {
       "value": "64",
       "unit": "GBYTE"
     }
   }],
   "screen": {
-    "size_inch": 13.0,
+    "size_inch": 24.0,
     "resolution": {
-      "width": 1069,
+      "width": 3372,
       "height": 0
     },
     "panel": "IPS",
     "multitouch": false
   },
   "storage": [],
-  "usd_price": 1536.839201134178,
-  "release_year": 2022,
-  "updated_at": "1970-01-01T00:00:00.418672Z"
+  "usd_price": 699.8692863043261,
+  "release_year": 2018,
+  "updated_at": "1970-01-01T00:00:00.581655Z"
 }
