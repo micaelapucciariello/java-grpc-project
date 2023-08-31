@@ -1,5 +1,6 @@
 package com.github.micaelapucciariello.pcbook.service;
 
+import io.grpc.Context;
 import io.grpc.Status;
 import pcbook.PC;
 import pcbook.PCServiceGrpc;
@@ -38,6 +39,11 @@ public class PCService extends PCServiceGrpc.PCServiceImplBase {
          }
 
         assert uuid != null;
+
+         if (Context.current().isCancelled()){
+             logger.info("request is cancelled");
+             responseObserver.onError(Status.CANCELLED.withDescription("request is cancelled").asRuntimeException());
+         }
         PC other = pc.toBuilder().setId(uuid.toString()).build();
         try {
             store.Save(other);
