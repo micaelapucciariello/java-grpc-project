@@ -9,7 +9,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 public class PCService extends PCServiceGrpc.PCServiceImplBase {
-    public static final Logger logger = Logger.getLogger(PCService.logger.getName());
+    public static final Logger logger = Logger.getLogger(PCService.class.getName());
 
     private PCStore store;
 
@@ -18,7 +18,7 @@ public class PCService extends PCServiceGrpc.PCServiceImplBase {
     }
 
     @Override
-    public void createPc(pcbook.ServicePc.CreatePCRequest request,
+    public void createPC(pcbook.ServicePc.CreatePCRequest request,
                          io.grpc.stub.StreamObserver<pcbook.ServicePc.CreatePCResponse> responseObserver){
          PC pc = request.getPc();
 
