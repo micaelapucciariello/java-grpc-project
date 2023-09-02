@@ -6,6 +6,7 @@ import pcbook.*;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.Random;
+import java.util.UUID;
 
 public class Generator {
     private Random rand;
@@ -25,6 +26,7 @@ public class Generator {
                 .build();
 
         return PC.newBuilder()
+                .setId(UUID.randomUUID().toString())
                 .setBrand(brand)
                 .setCpu(NewCPU())
                 .addGpu(NewGPU())
